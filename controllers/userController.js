@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const transporter = require("../config/mailer");
-
+const Vehicle = require('../models/vehicleModel');
+const SparePart = require('../models/sparePartModel');
 
 const generateToken = (id, userType) => {
   return jwt.sign({ id, userType }, process.env.JWT_SECRET, {
@@ -31,10 +32,9 @@ exports.signup = async (req, res) => {
       userType,
     });
 
-    // Save the user in the database
     await newUser.save();
 
-    // Generate a token
+
     const token = generateToken(newUser._id, newUser.userType);
 
     res.status(201).json({
@@ -52,24 +52,22 @@ exports.signup = async (req, res) => {
   }
 };
 
-// Login controller
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if the user exists
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // Check if the password matches
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // Generate a token
     const token = generateToken(user._id, user.userType);
 
     res.status(200).json({
@@ -135,7 +133,7 @@ exports.resetPassword = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-    user.otp = undefined; // Clear OTP after password reset
+    user.otp = undefined; 
     await user.save();
 
     res.send({ message: "Password reset successful" });
@@ -144,3 +142,105 @@ exports.resetPassword = async (req, res) => {
     res.status(500).send({ message: "An error occurred", error });
   }
 };
+
+
+
+exports.addVehicleToWishlist = async (req, res) => {
+    const { id: userId } = req.user; 
+    const { vehicleId } = req.body;
+  
+    try {
+
+      const user = await User.findById(userId);
+      if (!user || user.userType !== 'buyer') {
+        return res.status(403).json({ message: 'Only buyers can add to wishlist' });
+      }
+  
+      const vehicle = await Vehicle.findById(vehicleId);
+      if (!vehicle) {
+        return res.status(404).json({ message: 'Vehicle not found' });
+      }
+  
+
+      if (!user.wishlist.vehicles.includes(vehicleId)) {
+        user.wishlist.vehicles.push(vehicleId);
+        await user.save();
+      }
+  
+      res.status(200).json({ message: 'Vehicle added to wishlist', wishlist: user.wishlist });
+    } catch (error) {
+      console.error('Error adding vehicle to wishlist:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };
+  
+  // Remove vehicle from wishlist
+  exports.removeVehicleFromWishlist = async (req, res) => {
+    const { id: userId } = req.user;
+    const { vehicleId } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user || user.userType !== 'buyer') {
+        return res.status(403).json({ message: 'Only buyers can remove from wishlist' });
+      }
+  
+    
+      user.wishlist.vehicles = user.wishlist.vehicles.filter(id => id.toString() !== vehicleId);
+      await user.save();
+  
+      res.status(200).json({ message: 'Vehicle removed from wishlist', wishlist: user.wishlist });
+    } catch (error) {
+      console.error('Error removing vehicle from wishlist:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };
+  
+  // Add spare part to wishlist
+  exports.addSparePartToWishlist = async (req, res) => {
+    const { id: userId } = req.user;
+    const { sparePartId } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user || user.userType !== 'buyer') {
+        return res.status(403).json({ message: 'Only buyers can add to wishlist' });
+      }
+  
+      const sparePart = await SparePart.findById(sparePartId);
+      if (!sparePart) {
+        return res.status(404).json({ message: 'Spare part not found' });
+      }
+  
+      if (!user.wishlist.spareParts.includes(sparePartId)) {
+        user.wishlist.spareParts.push(sparePartId);
+        await user.save();
+      }
+  
+      res.status(200).json({ message: 'Spare part added to wishlist', wishlist: user.wishlist });
+    } catch (error) {
+      console.error('Error adding spare part to wishlist:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };
+  
+  // Remove spare part from wishlist
+  exports.removeSparePartFromWishlist = async (req, res) => {
+    const { id: userId } = req.user;
+    const { sparePartId } = req.body;
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user || user.userType !== 'buyer') {
+        return res.status(403).json({ message: 'Only buyers can remove from wishlist' });
+      }
+  
+      user.wishlist.spareParts = user.wishlist.spareParts.filter(id => id.toString() !== sparePartId);
+      await user.save();
+  
+      res.status(200).json({ message: 'Spare part removed from wishlist', wishlist: user.wishlist });
+    } catch (error) {
+      console.error('Error removing spare part from wishlist:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  };

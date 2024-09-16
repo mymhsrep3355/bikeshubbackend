@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const connectDB = require('./config/db');
 const requestLogger = require('./middlewares/requestLogger');
+const storeRoutes = require('./routes/storeRoutes');
+const productRoutes = require('./routes/productRoutes');
 // const verifyToken = require('./middlewares/authMiddleware'); // Token verification middleware
 
 
@@ -21,6 +23,8 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use('/api/users', userRoutes);
+app.use('/api/stores', storeRoutes);
+app.use('/api/products', productRoutes);
 
 app.get('/', (req, res) => {
   res.send('Welcome to Bikeshub API');

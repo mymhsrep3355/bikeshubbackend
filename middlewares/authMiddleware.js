@@ -15,4 +15,18 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = verifyToken;
+const isSeller = (req, res, next) => {
+  if (req.user.userType !== 'seller') {
+    return res.status(403).json({ message: 'Access denied, only sellers can perform this action' });
+  }
+  next();
+};
+
+const isBuyer = (req, res, next) => {
+  if (req.user.userType !== 'buyer') {
+    return res.status(403).json({ message: 'Access denied, only buyers can perform this action' });
+  }
+  next();
+};
+
+module.exports = { verifyToken, isSeller, isBuyer };

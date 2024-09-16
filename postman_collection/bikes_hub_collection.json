@@ -1,124 +1,551 @@
 {
     "info": {
-      "name": "User Authentication API",
+      "name": "Bikeshub API Collection",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
       {
-        "name": "Signup",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
+        "name": "User Management",
+        "item": [
+          {
+            "name": "Signup",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/signup",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "signup"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\",\n  \"userType\": \"seller\"\n}"
+              }
             }
-          ],
-          "url": {
-            "raw": "{{baseUrl}}/api/users/signup",
-            "host": ["{{baseUrl}}"],
-            "path": ["api", "users", "signup"]
           },
-          "body": {
-            "mode": "raw",
-            "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\",\n  \"userType\": \"buyer\"\n}"
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "login"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Forgot Password",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/forgot-password",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "forgot-password"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Reset Password",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/reset-password",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "reset-password"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"newPassword\": \"newpassword123\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Verify OTP",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/verify-otp",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "verify-otp"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"otp\": \"123456\"\n}"
+              }
+            }
           }
-        },
-        "response": []
+        ]
       },
       {
-        "name": "Login",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
+        "name": "Store Management",
+        "item": [
+          {
+            "name": "Create Store",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/stores/create",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "stores", "create"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Test Store\",\n  \"description\": \"A store for testing purposes\"\n}"
+              }
             }
-          ],
-          "url": {
-            "raw": "{{baseUrl}}/api/users/login",
-            "host": ["{{baseUrl}}"],
-            "path": ["api", "users", "login"]
           },
-          "body": {
-            "mode": "raw",
-            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\"\n}"
+          {
+            "name": "Get All Stores",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/stores",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "stores"]
+              }
+            }
+          },
+          {
+            "name": "Update Store",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/stores/{{storeId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "stores", "{{storeId}}"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Store Name\",\n  \"description\": \"Updated description\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Delete Store",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/stores/{{storeId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "stores", "{{storeId}}"]
+              }
+            }
           }
-        },
-        "response": []
+        ]
       },
       {
-        "name": "Forgot Password",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
+        "name": "Product Management",
+        "item": [
+          {
+            "name": "Add Vehicle",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/add-vehicle",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "add-vehicle"]
+              },
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  {
+                    "key": "images",
+                    "type": "file",
+                    "src": ""
+                  },
+                  {
+                    "key": "name",
+                    "value": "Test Vehicle",
+                    "type": "text"
+                  },
+                  {
+                    "key": "model",
+                    "value": "Model X",
+                    "type": "text"
+                  },
+                  {
+                    "key": "year",
+                    "value": "2022",
+                    "type": "text"
+                  },
+                  {
+                    "key": "company",
+                    "value": "Test Company",
+                    "type": "text"
+                  },
+                  {
+                    "key": "description",
+                    "value": "A test vehicle",
+                    "type": "text"
+                  },
+                  {
+                    "key": "price",
+                    "value": "50000",
+                    "type": "text"
+                  },
+                  {
+                    "key": "storeId",
+                    "value": "{{storeId}}",
+                    "type": "text"
+                  }
+                ]
+              }
             }
-          ],
-          "url": {
-            "raw": "{{baseUrl}}/api/users/forgot-password",
-            "host": ["{{baseUrl}}"],
-            "path": ["api", "users", "forgot-password"]
           },
-          "body": {
-            "mode": "raw",
-            "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+          {
+            "name": "Update Vehicle",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/vehicle/{{vehicleId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "vehicle", "{{vehicleId}}"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Vehicle Name\",\n  \"model\": \"Updated Model\",\n  \"year\": 2023,\n  \"company\": \"Updated Company\",\n  \"description\": \"Updated description\",\n  \"price\": 60000\n}"
+              }
+            }
+          },
+          {
+            "name": "Delete Vehicle",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/vehicle/{{vehicleId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "vehicle", "{{vehicleId}}"]
+              }
+            }
+          },
+          {
+            "name": "Get All Vehicles in Store",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/store/{{storeId}}/vehicles",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "store", "{{storeId}}", "vehicles"]
+              }
+            }
+          },
+          {
+            "name": "Add Spare Part",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/add-spare-part",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "add-spare-part"]
+              },
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  {
+                    "key": "images",
+                    "type": "file",
+                    "src": ""
+                  },
+                  {
+                    "key": "name",
+                    "value": "Test Spare Part",
+                    "type": "text"
+                  },
+                  {
+                    "key": "description",
+                    "value": "A test spare part",
+                    "type": "text"
+                  },
+                  {
+                    "key": "usage",
+                    "value": "Used for testing",
+                    "type": "text"
+                  },
+                  {
+                    "key": "storeId",
+                    "value": "{{storeId}}",
+                    "type": "text"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Update Spare Part",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/spare-part/{{sparePartId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "spare-part", "{{sparePartId}}"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Spare Part Name\",\n  \"description\": \"Updated description\",\n  \"usage\": \"Updated usage\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Delete Spare Part",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/spare-part/{{sparePartId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "spare-part", "{{sparePartId}}"]
+              }
+            }
+          },
+          {
+            "name": "Get All Spare Parts in Store",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/products/store/{{storeId}}/spare-parts",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "products", "store", "{{storeId}}", "spare-parts"]
+              }
+            }
           }
-        },
-        "response": []
+        ]
       },
       {
-        "name": "Verify OTP",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
+        "name": "Wishlist Management",
+        "item": [
+          {
+            "name": "Add Vehicle to Wishlist",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/wishlist/vehicle/add",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "wishlist", "vehicle", "add"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"vehicleId\": \"{{vehicleId}}\"\n}"
+              }
             }
-          ],
-          "url": {
-            "raw": "{{baseUrl}}/api/users/verify-otp",
-            "host": ["{{baseUrl}}"],
-            "path": ["api", "users", "verify-otp"]
           },
-          "body": {
-            "mode": "raw",
-            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"otp\": \"123456\"\n}"
-          }
-        },
-        "response": []
-      },
-      {
-        "name": "Reset Password",
-        "request": {
-          "method": "POST",
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
+          {
+            "name": "Remove Vehicle from Wishlist",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/wishlist/vehicle/remove",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "wishlist", "vehicle", "remove"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"vehicleId\": \"{{vehicleId}}\"\n}"
+              }
             }
-          ],
-          "url": {
-            "raw": "{{baseUrl}}/api/users/reset-password",
-            "host": ["{{baseUrl}}"],
-            "path": ["api", "users", "reset-password"]
           },
-          "body": {
-            "mode": "raw",
-            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"newPassword\": \"newpassword123\"\n}"
+          {
+            "name": "Add Spare Part to Wishlist",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/wishlist/spare-part/add",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "wishlist", "spare-part", "add"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"sparePartId\": \"{{sparePartId}}\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Remove Spare Part from Wishlist",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/api/users/wishlist/spare-part/remove",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "users", "wishlist", "spare-part", "remove"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"sparePartId\": \"{{sparePartId}}\"\n}"
+              }
+            }
           }
-        },
-        "response": []
+        ]
       }
     ],
     "variable": [
       {
         "key": "baseUrl",
         "value": "http://localhost:8000"
+      },
+      {
+        "key": "token",
+        "value": ""
+      },
+      {
+        "key": "storeId",
+        "value": ""
+      },
+      {
+        "key": "vehicleId",
+        "value": ""
+      },
+      {
+        "key": "sparePartId",
+        "value": ""
       }
     ]
   }
