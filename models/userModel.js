@@ -20,7 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['buyer', 'seller'],
     required: true
-  }
+  },
+  otp: {
+    type: String,
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
