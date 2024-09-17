@@ -22,8 +22,10 @@ const userSchema = new mongoose.Schema({
     enum: ['buyer', 'seller'],
     required: true,
   },
-  otp: {
-    type: String,
+  otp: String,
+  isOtpVerified: {
+    type: Boolean,
+    default: false,
   },
   wishlist: {
     vehicles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vehicle' }],

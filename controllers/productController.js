@@ -4,7 +4,8 @@ const Store = require('../models/storeModel');
 
 exports.addVehicle = async (req, res) => {
   const { name, model, year, company, description, price, storeId } = req.body;
-  const images = req.files ? req.files.map(file => file.path) : []; 
+  // const images = req.files ? req.files.map(file => file.path) : []; 
+  const images = req.files ? req.files.map(file => file.firebaseUrl) : [];
 
   if (images.length === 0) {
     return res.status(400).json({ message: 'At least one image is required' });
@@ -37,8 +38,8 @@ exports.addVehicle = async (req, res) => {
 
 exports.addSparePart = async (req, res) => {
   const { name, description, usage, storeId } = req.body;
-  const images = req.files ? req.files.map(file => file.path) : [];
-
+  // const images = req.files ? req.files.map(file => file.path) : [];
+  const images = req.files ? req.files.map(file => file.firebaseUrl) : [];
   if (images.length === 0) {
     return res.status(400).json({ message: 'At least one image is required' });
   }

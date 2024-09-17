@@ -109,6 +109,41 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
+// exports.otpVerification = async (req, res) => {
+//   const { email, otp } = req.body;
+//   try {
+//     const user = await User.findOne({ email, otp });
+//     if (!user) {
+//       return res.status(400).json({ message: "Invalid OTP" });
+//     }
+//     res.status(200).json({ message: "OTP Verified" });
+//   } catch (error) {
+//     console.error("Error during OTP verification:", error);
+//     res.status(500).json({ message: "An error occurred", error });
+//   }
+// };
+
+// exports.resetPassword = async (req, res) => {
+//   const { email, newPassword } = req.body;
+
+//   try {
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).send({ message: "Invalid email" });
+//     }
+//     const salt = await bcrypt.genSalt(10);
+//     user.password = await bcrypt.hash(newPassword, salt);
+//     user.otp = undefined; 
+//     await user.save();
+
+//     res.send({ message: "Password reset successful" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send({ message: "An error occurred", error });
+//   }
+// };
+
+
 exports.otpVerification = async (req, res) => {
   const { email, otp } = req.body;
   try {
@@ -116,24 +151,38 @@ exports.otpVerification = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
-    res.status(200).json({ message: "OTP Verified" });
+
+    // Set the OTP verification status
+    user.isOtpVerified = true;
+    user.otp = undefined; // Clear the OTP after successful verification
+    await user.save();
+
+    res.status(200).json({ message: "OTP Verified. You can now reset your password." });
   } catch (error) {
     console.error("Error during OTP verification:", error);
     res.status(500).json({ message: "An error occurred", error });
   }
 };
 
+
 exports.resetPassword = async (req, res) => {
   const { email, newPassword } = req.body;
 
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(400).send({ message: "Invalid email" });
     }
+
+    if (!user.isOtpVerified) {
+      return res.status(400).send({ message: "OTP not verified. Please verify OTP before resetting the password." });
+    }
+
+   
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-    user.otp = undefined; 
+    user.isOtpVerified = false; 
     await user.save();
 
     res.send({ message: "Password reset successful" });
@@ -142,7 +191,6 @@ exports.resetPassword = async (req, res) => {
     res.status(500).send({ message: "An error occurred", error });
   }
 };
-
 
 
 exports.addVehicleToWishlist = async (req, res) => {
