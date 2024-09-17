@@ -170,3 +170,32 @@ exports.getStoreProducts = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+
+//to get vehicle and spare part by id
+
+exports.getVehicleById = async (req, res) => {
+  const { vehicleId } = req.params;
+  try {
+    const vehicle = await Vehicle.findById(vehicleId);
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Vehicle not found' });
+    }
+    res.status(200).json(vehicle);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+exports.getSparePartById = async (req, res) => {
+  const { sparePartId } = req.params;
+  try {
+    const sparePart = await SparePart.findById(sparePartId);
+    if (!sparePart) {
+      return res.status(404).json({ message: 'Spare part not found' });
+    }
+    res.status(200).json(sparePart);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};
