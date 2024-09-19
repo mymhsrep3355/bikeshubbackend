@@ -159,6 +159,7 @@ exports.updateVehicle = async (req, res) => {
   };
 
   
+// Get all products in a store
 exports.getStoreProducts = async (req, res) => {
   const { storeId } = req.params;
 

@@ -1,4 +1,3 @@
-// // middlewares/uploadMiddleware.js
 // const multer = require('multer');
 // const path = require('path');
 // const fs = require('fs');
@@ -47,11 +46,11 @@
 const multer = require('multer');
 const bucket = require('../config/firebaseConfig');
 
-// Configure multer to use memory storage
+//memory storage for storing files temporarily
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Function to upload images to Firebase Cloud Storage
+//upload image to firebase
 const uploadImageToFirebase = async (req, res, next) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ message: 'No files uploaded' });
@@ -82,7 +81,6 @@ const uploadImageToFirebase = async (req, res, next) => {
       });
     });
 
-    // Wait for all files to be uploaded
     await Promise.all(uploadPromises);
     next();
   } catch (error) {

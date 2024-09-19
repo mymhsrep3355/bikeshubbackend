@@ -16,29 +16,28 @@ const initializeWebSocket = require('./socket');
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server from the Express app
-const io = initializeWebSocket(server); // Initialize Socket.IO with the HTTP server
+const server = http.createServer(app); 
+const io = initializeWebSocket(server); 
 
-// Connect to MongoDB
+
 connectDB();
 
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
-// Set up the routes
 app.use('/api/users', userRoutes);
 app.use('/api/stores', storeRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/ads', adRoutes);
-app.use('/api/chats', chatRoutes); // Add chat routes
+app.use('/api/chats', chatRoutes); 
 
 app.get('/', (req, res) => {
-  res.send('Welcome to Bikeshub API');
+  res.send('Welcome to Bikeshub Backend');
 });
 
-// Start the server with the WebSocket functionality
+
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
 });

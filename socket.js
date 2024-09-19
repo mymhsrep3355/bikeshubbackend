@@ -1,4 +1,3 @@
-// socket.js
 const { Server } = require('socket.io');
 const Chat = require('./models/chatModel');
 const User = require('./models/userModel');
