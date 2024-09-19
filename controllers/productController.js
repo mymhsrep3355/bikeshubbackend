@@ -3,7 +3,7 @@ const SparePart = require('../models/sparePartModel');
 const Store = require('../models/storeModel');
 
 exports.addVehicle = async (req, res) => {
-  const { name, model, year, company, description, price, storeId } = req.body;
+  const { name, model, year, company, location, description, price, storeId } = req.body;
   // const images = req.files ? req.files.map(file => file.path) : []; 
   const images = req.files ? req.files.map(file => file.firebaseUrl) : [];
 
@@ -25,6 +25,7 @@ exports.addVehicle = async (req, res) => {
       company,
       description,
       price,
+      location,
       store: storeId,
     });
 
