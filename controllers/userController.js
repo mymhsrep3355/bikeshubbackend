@@ -73,6 +73,7 @@ exports.login = async (req, res) => {
     res.status(200).json({
       message: "Logged in successfully",
       user: {
+        id: user._id,
         username: user.username,
         email: user.email,
         userType: user.userType,
@@ -108,40 +109,6 @@ exports.forgotPassword = async (req, res) => {
     res.status(500).send({ message: "An error occurred", error });
   }
 };
-
-// exports.otpVerification = async (req, res) => {
-//   const { email, otp } = req.body;
-//   try {
-//     const user = await User.findOne({ email, otp });
-//     if (!user) {
-//       return res.status(400).json({ message: "Invalid OTP" });
-//     }
-//     res.status(200).json({ message: "OTP Verified" });
-//   } catch (error) {
-//     console.error("Error during OTP verification:", error);
-//     res.status(500).json({ message: "An error occurred", error });
-//   }
-// };
-
-// exports.resetPassword = async (req, res) => {
-//   const { email, newPassword } = req.body;
-
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//       return res.status(400).send({ message: "Invalid email" });
-//     }
-//     const salt = await bcrypt.genSalt(10);
-//     user.password = await bcrypt.hash(newPassword, salt);
-//     user.otp = undefined; 
-//     await user.save();
-
-//     res.send({ message: "Password reset successful" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send({ message: "An error occurred", error });
-//   }
-// };
 
 
 exports.otpVerification = async (req, res) => {
