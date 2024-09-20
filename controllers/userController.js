@@ -86,6 +86,35 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { username, email } = req.body;
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    if (username) user.username = username;
+    if (email) user.email = email;
+
+    await user.save();
+
+    res.status(200).json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        userType: user.userType,
+      },
+    });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    res.status(500).json({ message: 'Failed to update profile', error });
+  }
+};
+
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   try {

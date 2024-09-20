@@ -9,6 +9,7 @@ const {
   removeVehicleFromWishlist,
   addSparePartToWishlist,
   removeSparePartFromWishlist,
+  updateProfile,
 } = require('../controllers/userController');
 const { verifyToken, isBuyer } = require('../middlewares/authMiddleware'); 
 const router = express.Router();
@@ -18,7 +19,7 @@ router.post('/login', login);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 router.post('/verify-otp', otpVerification);
-
+router.put('/update-profile', verifyToken, updateProfile);
 router.post('/wishlist/vehicle/add', verifyToken, isBuyer, addVehicleToWishlist);
 router.post('/wishlist/vehicle/remove', verifyToken, isBuyer, removeVehicleFromWishlist);
 router.post('/wishlist/spare-part/add', verifyToken, isBuyer, addSparePartToWishlist);

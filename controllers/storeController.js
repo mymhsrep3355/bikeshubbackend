@@ -50,6 +50,34 @@ exports.updateStore = async (req, res) => {
     }
   };
 
+  exports.getAllStoresWithProducts = async (req, res) => {
+    try {
+      const stores = await Store.find().populate('seller', 'username email');
+
+      const storeDetails = await Promise.all(
+        stores.map(async (store) => {
+          const vehicles = await Vehicle.find({ store: store._id });
+          const spareParts = await SparePart.find({ store: store._id });
+  
+          return {
+            store: {
+              id: store._id,
+              name: store.name,
+              description: store.description,
+              seller: store.seller,
+            },
+            vehicles,
+            spareParts,
+          };
+        })
+      );
+  
+      res.status(200).json(storeDetails);
+    } catch (error) {
+      console.error('Error fetching stores with products:', error);
+      res.status(500).json({ message: 'Server error', error });
+    }
+  };
 
 exports.getAllStores = async (req, res) => {
   try {
