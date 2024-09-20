@@ -50,6 +50,30 @@ exports.updateStore = async (req, res) => {
     }
   };
 
+  // Get store with products
+  exports.getStoreWithProducts = async (req, res) => {
+    try {
+      const { storeId } = req.params;
+      const store = await Store.findById(storeId).populate('seller', 'username email');
+  
+      if (!store) {
+        return res.status(404).json({ message: 'Store not found' });
+      }
+  
+      const vehicles = await Vehicle.find({ store: storeId });
+      const spareParts = await SparePart.find({ store: storeId });
+  
+      res.status(200).json({
+        store,
+        vehicles,
+        spareParts,
+      });
+    } catch (error) {
+      console.error('Error retrieving store and products:', error);
+      res.status(500).json({ message: 'Failed to retrieve store and products', error });
+    }
+  };
+
   exports.getAllStoresWithProducts = async (req, res) => {
     try {
       const stores = await Store.find().populate('seller', 'username email');
