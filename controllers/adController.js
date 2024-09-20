@@ -27,6 +27,29 @@ const images = req.files ? req.files.map(file => file.firebaseUrl) : [];
   }
 };
 
+exports.getAdsForUser = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Get user ID from request parameters
+
+    // Check if the userId is a valid ObjectId
+    if (!userId || !userId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
+    // Find all ads posted by the specified user ID
+    const ads = await Ad.find({ postedBy: userId });
+
+    if (ads.length === 0) {
+      return res.status(404).json({ message: 'No ads found for this user' });
+    }
+
+    res.status(200).json({ message: 'Ads retrieved successfully', ads });
+  } catch (error) {
+    console.error('Error fetching ads for user:', error);
+    res.status(500).json({ message: 'Failed to retrieve ads for user', error });
+  }
+};
+
 // Get all ads
 exports.getAllAds = async (req, res) => {
   try {
@@ -36,6 +59,7 @@ exports.getAllAds = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
 
 // Get ad by ID
 exports.getAdById = async (req, res) => {

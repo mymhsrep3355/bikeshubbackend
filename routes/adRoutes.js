@@ -5,6 +5,7 @@ const {
   getAdById,
   updateAd,
   deleteAd,
+  getAdsForUser
 } = require("../controllers/adController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const {
@@ -30,5 +31,7 @@ router.put(
   updateAd
 );
 router.delete("/:adId", verifyToken, deleteAd);
+router.get("/user/:userId", verifyToken, getAdsForUser);
+
 
 module.exports = router;
