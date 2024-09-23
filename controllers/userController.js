@@ -150,7 +150,7 @@ exports.otpVerification = async (req, res) => {
 
     // Set the OTP verification status
     user.isOtpVerified = true;
-    user.otp = undefined; // Clear the OTP after successful verification
+    user.otp = undefined; 
     await user.save();
 
     res.status(200).json({ message: "OTP Verified. You can now reset your password." });
