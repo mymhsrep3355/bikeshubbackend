@@ -36,6 +36,10 @@ app.get('/', (req, res) => {
   res.send('Welcome to Bikeshub Backend');
 });
 
+app.get('/sever', (req, res) =>{
+  res.send('Server is up and running');
+});
+
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

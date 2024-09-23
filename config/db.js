@@ -1,14 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      replicaSet: "atlas-hjqmsu-shard-0",
+      readPreference: "primary",
+      authSource: "admin",
+      retryWrites: true,
+      w: "majority",
     });
-    console.log('MongoDB Connected');
+    console.log("MongoDB Connected");
   } catch (error) {
-    console.error('Error connecting to MongoDB', error);
+    console.error("Error connecting to MongoDB", error);
     process.exit(1);
   }
 };
