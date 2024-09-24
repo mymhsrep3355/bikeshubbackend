@@ -1,5 +1,5 @@
 const express = require('express');
-const { createStore, getAllStores, updateStore, deleteStore, getAllStoresWithProducts, getStoreWithProducts } = require('../controllers/storeController');
+const { createStore, getAllStores, updateStore, deleteStore, getStoresForUser, getAllStoresWithProducts, getStoreWithProducts } = require('../controllers/storeController');
 const { verifyToken, isSeller } = require('../middlewares/authMiddleware');
 const { upload, uploadImageToFirebase } = require('../middlewares/uploadMiddleware');
 const router = express.Router();
@@ -16,6 +16,7 @@ router.post(
 router.get('/all-with-products', verifyToken, getAllStoresWithProducts);
 router.get('/', getAllStores);
 router.get('/:storeId/products', verifyToken, getStoreWithProducts);
+router.get('/user/:userId', verifyToken, getStoresForUser);
 
 router.put(
   '/:storeId',
