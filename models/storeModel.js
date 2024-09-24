@@ -8,6 +8,10 @@ const storeSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  images: [{
+    type: String,
+    required: true, 
+  }],
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
