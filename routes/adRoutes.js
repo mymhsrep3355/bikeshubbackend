@@ -29,7 +29,6 @@ router.put(
   "/:adId",
   verifyToken,
   upload.array("images", 5),
-  uploadImageToFirebase,
   updateAd
 );
 router.delete("/:adId", verifyToken, deleteAd);
