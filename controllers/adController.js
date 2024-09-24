@@ -110,3 +110,14 @@ exports.deleteAd = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+// Get featured ads
+exports.getFeaturedAds = async (req, res) => {
+  try {
+    const ads = await Ad.find().sort({ createdAt: -1 }).limit(6);
+    res.status(200).json({ message: 'Featured ads retrieved successfully', ads });
+  } catch (error) {
+    console.error('Error fetching featured ads:', error);
+    res.status(500).json({ message: 'Failed to retrieve featured ads', error });
+  }
+};

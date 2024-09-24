@@ -5,7 +5,8 @@ const {
   getAdById,
   updateAd,
   deleteAd,
-  getAdsForUser
+  getAdsForUser,
+  getFeaturedAds
 } = require("../controllers/adController");
 const { verifyToken } = require("../middlewares/authMiddleware");
 const {
@@ -22,6 +23,7 @@ router.post(
   createAd
 );
 router.get("/", getAllAds);
+router.get("/featured", getFeaturedAds);
 router.get("/:adId", getAdById);
 router.put(
   "/:adId",

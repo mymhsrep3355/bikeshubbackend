@@ -204,3 +204,25 @@ exports.getSparePartById = async (req, res) => {
 };
 
 
+
+exports.getFeaturedVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find().sort({ createdAt: -1 }).limit(6);
+    res.status(200).json({ message: 'Featured vehicles retrieved successfully', vehicles });
+  } catch (error) {
+    console.error('Error fetching featured vehicles:', error);
+    res.status(500).json({ message: 'Failed to retrieve featured vehicles', error });
+  }
+};
+
+
+exports.getFeaturedSpareParts = async (req, res) => {
+  try {
+    // Fetch top 5-6 spare parts sorted by creation date or any other criteria
+    const spareParts = await SparePart.find().sort({ createdAt: -1 }).limit(6);
+    res.status(200).json({ message: 'Featured spare parts retrieved successfully', spareParts });
+  } catch (error) {
+    console.error('Error fetching featured spare parts:', error);
+    res.status(500).json({ message: 'Failed to retrieve featured spare parts', error });
+  }
+};

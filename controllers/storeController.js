@@ -74,6 +74,7 @@ exports.updateStore = async (req, res) => {
     }
   };
 
+  
   exports.getAllStoresWithProducts = async (req, res) => {
     try {
       const stores = await Store.find().populate('seller', 'username email');
