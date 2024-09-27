@@ -1,6 +1,5 @@
 const { Server } = require('socket.io');
 const Chat = require('./models/chatModel');
-const User = require('./models/userModel');
 
 function initializeWebSocket(server) {
   const io = new Server(server, {
@@ -48,8 +47,19 @@ function initializeWebSocket(server) {
           return socket.emit('error', 'Chat not found');
         }
 
+        // Determine sender and receiver
+        let receiverId;
+        if (senderId === chat.buyer.toString()) {
+          receiverId = chat.seller;
+        } else if (senderId === chat.seller.toString()) {
+          receiverId = chat.buyer;
+        } else {
+          return socket.emit('error', 'Invalid sender ID');
+        }
+
         const message = {
           sender: senderId,
+          receiver: receiverId,
           content,
           timestamp: Date.now(),
         };

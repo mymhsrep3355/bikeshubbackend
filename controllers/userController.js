@@ -188,6 +188,23 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+exports.getWishlist = async (req, res) => {
+  const { id: userId } = req.user;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ wishlist: user.wishlist });
+  } catch (error) {
+    console.error('Error getting wishlist:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
 
 exports.addVehicleToWishlist = async (req, res) => {
     const { id: userId } = req.user; 
@@ -268,7 +285,7 @@ exports.addVehicleToWishlist = async (req, res) => {
     }
   };
   
-  // Remove spare part from wishlist
+ 
   exports.removeSparePartFromWishlist = async (req, res) => {
     const { id: userId } = req.user;
     const { sparePartId } = req.body;
@@ -288,3 +305,5 @@ exports.addVehicleToWishlist = async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   };
+
+  

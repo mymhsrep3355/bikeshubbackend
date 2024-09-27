@@ -15,6 +15,10 @@ const sparePartSchema = new mongoose.Schema({
   usage: {
     type: String,
   },
+  price: {
+    type: Number,
+    required: true,
+  },
   store: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Store',

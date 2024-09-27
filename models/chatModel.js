@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const messageSchema = new mongoose.Schema(
   {
     sender: {
@@ -6,6 +7,11 @@ const messageSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    // receiver: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'User',
+    //   required: true, // This field should be required to avoid errors
+    // },
     content: {
       type: String,
       required: true,
@@ -16,10 +22,9 @@ const messageSchema = new mongoose.Schema(
     },
   },
   {
-    _id: false, 
+    _id: false, // Prevent creation of individual IDs for each message
   }
 );
-
 
 const chatSchema = new mongoose.Schema(
   {
@@ -33,7 +38,7 @@ const chatSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    messages: [messageSchema],
+    messages: [messageSchema], // This must include the messageSchema
     status: {
       type: String,
       enum: ['active', 'closed'],

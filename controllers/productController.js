@@ -38,7 +38,7 @@ exports.addVehicle = async (req, res) => {
 
 
 exports.addSparePart = async (req, res) => {
-  const { name, description, usage, storeId } = req.body;
+  const { name, description, usage, storeId, price } = req.body;
   // const images = req.files ? req.files.map(file => file.path) : [];
   const images = req.files ? req.files.map(file => file.firebaseUrl) : [];
   if (images.length === 0) {
@@ -56,6 +56,7 @@ exports.addSparePart = async (req, res) => {
       name,
       description,
       usage,
+      price,
       store: storeId,
     });
 
@@ -103,12 +104,12 @@ exports.updateVehicle = async (req, res) => {
   // Update spare part
   exports.updateSparePart = async (req, res) => {
     const { sparePartId } = req.params;
-    const { name, description, usage } = req.body;
+    const { name, description, usage, price } = req.body;
   
     try {
       const sparePart = await SparePart.findByIdAndUpdate(
         sparePartId,
-        { name, description, usage },
+        { name, description, usage, price },
         { new: true }
       );
       if (!sparePart) {
